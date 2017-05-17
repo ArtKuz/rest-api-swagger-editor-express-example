@@ -1,0 +1,160 @@
+swagger: '2.0'
+info:
+  title: Library API
+  version: 1.0.0
+  description: API для библиотеки
+host: 'localhost:10010'
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/x-www-form-urlencoded
+  - multipart/form-data
+produces:
+  - application/json
+paths:
+  /books:
+    x-swagger-router-controller: books
+    get:
+      tags:
+        - Books
+      description: Получить список книг
+      operationId: getAll
+      parameters:
+        - name: genre
+          description: Жанр
+          in: query
+          type: string
+          enum:
+            - ужасы
+            - детектив
+            - обучение
+            - детский
+            - фантастика
+            - фэнтези
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Internal Server Error
+    post:
+      tags:
+        - Books
+      description: Добавить новую книгу
+      parameters:
+        - $ref: '#/parameters/title'
+        - $ref: '#/parameters/author'
+        - $ref: '#/parameters/genre'
+        - $ref: '#/parameters/read'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error      
+  /books/{bookId}:
+    x-swagger-router-controller: booksId
+    get:
+      tags:
+        - Books
+      description: Получить информацию о книге по id
+      parameters:
+        - name: bookId
+          description: id книги
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - Books
+      description: Обновить информацию о книге
+      parameters:
+        - name: bookId
+          description: id книги
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/title'
+        - $ref: '#/parameters/author'
+        - $ref: '#/parameters/genre'
+        - $ref: '#/parameters/read'
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Internal Server Error
+    patch:
+      tags:
+        - Books
+      description: Изменить информацию о книге
+      parameters:
+        - name: bookId
+          description: id книги
+          in: path
+          required: true
+          type: string
+        - name: title
+          description: Название книги
+          in: formData
+          type: string
+        - $ref: '#/parameters/author'
+        - $ref: '#/parameters/genre'
+        - $ref: '#/parameters/read'
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Internal Server Error      
+    delete:
+      tags:
+        - Books
+      description: Удалить книгу
+      parameters:
+        - name: bookId
+          description: id книги
+          in: path
+          required: true
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '542':
+          description: ICS Error
+definitions: {}
+responses: {}
+parameters:
+  title:
+    name: title
+    description: Название книги
+    in: formData
+    required: true
+    type: string
+  author:
+    name: author
+    description: Автор
+    in: formData
+    type: string
+  genre:
+    name: genre
+    description: Жанр
+    in: formData
+    type: string
+    enum:
+      - ужасы
+      - детектив
+      - обучение
+      - детский
+      - фантастика
+      - фэнтези    
+  read:
+    name: read
+    description: Прочитана
+    in: formData
+    type: boolean
+tags: []
